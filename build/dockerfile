@@ -1,0 +1,11 @@
+FROM python:alpine
+LABEL org.opencontainers.image.source=https://github.com/rlanger2000/docker-webhooks
+WORKDIR /srv/
+COPY application/* .
+RUN pip install -r requirements.txt && rm requirements.txt
+
+RUN apk add wget curl bash
+
+EXPOSE 8000
+
+ENTRYPOINT [ "python", "main.py" ]

@@ -1,0 +1,38 @@
+name: Docker Image CI/CD
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read tags from file
+        id: tags
+        run: echo "tags=$(cat build/tags)" >> $GITHUB_OUTPUT
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build the Docker image
+        run: |
+          docker build . \
+            --file build/Dockerfile \
+            --tag ghcr.io/rlanger2000/docker-webhooks:new
+
+      - name: Tag and push Docker images
+        run: |
+          for tag in ${{ steps.tags.outputs.tags }}; do
+            echo "###  Tagging and pushing:  $tag  ###"
+            docker image tag ghcr.io/rlanger2000/docker-webhooks:new ghcr.io/rlanger2000/docker-webhooks:$tag
+            docker push ghcr.io/rlanger2000/docker-webhooks:$tag
+          done
