@@ -4,7 +4,7 @@ WORKDIR /srv/
 COPY application/* .
 RUN pip install -r requirements.txt && rm requirements.txt
 
-RUN apk add wget curl bash
+RUN apk add wget curl bash docker-cli docker-cli-compose
 
 EXPOSE 8000
 

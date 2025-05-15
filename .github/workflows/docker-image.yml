@@ -27,12 +27,12 @@ jobs:
         run: |
           docker build . \
             --file build/Dockerfile \
-            --tag ghcr.io/rlanger2000/docker-webhooks:new
+            --tag new_container
 
       - name: Tag and push Docker images
         run: |
           for tag in ${{ steps.tags.outputs.tags }}; do
             echo "###  Tagging and pushing:  $tag  ###"
-            docker image tag ghcr.io/rlanger2000/docker-webhooks:new ghcr.io/rlanger2000/docker-webhooks:$tag
-            docker push ghcr.io/rlanger2000/docker-webhooks:$tag
+            docker image tag new_container ghcr.io/${{github.repository}}:$tag
+            docker push ghcr.io/${{github.repository}}:$tag
           done
