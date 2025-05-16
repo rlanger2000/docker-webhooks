@@ -98,7 +98,14 @@ curl -X POST http://your.domain:8000/api?token=YOUR_TOKEN&hook=YOUR_HOOK
     runs-on: ubuntu-latest
     steps:
       - name: curl
-        run: curl --write-out '%{http_code}' --silent -X POST "${{ secrets.WEBHOOK_URI }}"
+        # Call API and fail if return is anything other than: {"success":true} 200
+        run: |
+          if [ "$(curl --write-out '%{http_code}' --silent -X POST '${{ secrets.WEBHOOK_URI }}')" = $'{\"success\":true}\n200' ]; then
+            echo 'OK';
+          else
+            echo $? && exit 1;
+          fi
+
 ```
 Note: You have to set a repository secret named WEBHOOK_URI
 
