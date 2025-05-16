@@ -91,5 +91,16 @@ Invoke-WebRequest -Method Post -Uri "http://your.domain:8000/api?token=YOUR_TOKE
 curl -X POST http://your.domain:8000/api?token=YOUR_TOKEN&hook=YOUR_HOOK
 ```
 
+#### GitHub Action
+```yaml
+  websocket-trigger:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: curl
+        run: curl --write-out '%{http_code}' --silent -X POST "${{ secrets.WEBHOOK_URI }}"
+```
+Note: You have to set a repository secret named WEBHOOK_URI
+
 ## Troubleshooting
 Sometimes the API returns "path not found" refering to the script you tried to call with your hook. This error is also caused by wrong permissions on the script file and if the script returns an error. Sadly I can not pipe the script error to the API directly.
