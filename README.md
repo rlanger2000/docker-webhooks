@@ -88,7 +88,7 @@ Invoke-WebRequest -Method Post -Uri "http://your.domain:8000/api?token=YOUR_TOKE
 ```
 #### cURL
 ```bash
-curl -X POST http://your.domain:8000/api?token=YOUR_TOKEN&hook=YOUR_HOOK
+curl -X POST 'http://your.domain:8000/api?token=YOUR_TOKEN&hook=YOUR_HOOK'
 ```
 
 #### GitHub Action
