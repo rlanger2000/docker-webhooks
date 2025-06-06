@@ -94,7 +94,7 @@ curl -X POST 'http://your.domain:8000/api?token=YOUR_TOKEN&hook=YOUR_HOOK'
 #### GitHub Action
 ```yaml
   websocket-trigger:
-    needs: build-and-push
+    needs: YOUR BUILD AND PUSH JOB
     runs-on: ubuntu-latest
     steps:
       - name: curl
